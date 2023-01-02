@@ -12,6 +12,9 @@ import React from 'react';
 import { Dimensions, Image, Text, View } from 'react-native';
 import HomePage from './src/HomePage';
 import ContactPage from './src/ContactPage';
+import DiscoverPage from './src/DiscoverPage';
+import MinePage from './src/MinePage';
+import ChatDetailPage from './src/HomePage/ChatPage';
 
 const BottomTab = createBottomTabNavigator();
 const RootStack = createNativeStackNavigator();
@@ -27,22 +30,6 @@ const BottomTabNav = () => {
         tabBarIcon: ({ focused, color, size }) => {
           let sourceRequire = require('./src/img/chats.png');
           let itemName = '微信';
-        //   if (route.name === '首页') {
-        //     sourceRequire = focused ? require('./src/img/home_h.png') : require('./src/img/home.png');
-        //     itemName = '首页';
-        //   } else if (route.name === '分类') {
-        //     sourceRequire = focused ? require('./src/img/category_h.png') : require('./src/img/category.png');
-        //     itemName = '分类';
-        //   }  else if (route.name === '服务') {
-        //     sourceRequire = focused ? require('./src/img/service_h.png') : require('./src/img/service.png');
-        //     itemName = '服务';
-        //   }  else if (route.name === '购物车') {
-        //     sourceRequire = focused ? require('./src/img/cart_h.png') : require('./src/img/cart.png');
-        //     itemName = '购物车';
-        //   }  else if (route.name === '我的') {
-        //     sourceRequire = focused ? require('./src/img/mine_h.png') : require('./src/img/mine.png');
-        //     itemName = '我的';
-        //   } 
         if (route.name === '微信') {
             sourceRequire = focused ? require('./src/img/chats_h.png') : require('./src/img/chats.png');
             itemName = '微信';
@@ -70,8 +57,8 @@ const BottomTabNav = () => {
     >
       <BottomTab.Screen name='微信' component={HomePage} />
       <BottomTab.Screen name='通讯录' component={ContactPage} />
-      <BottomTab.Screen name='发现' component={DetailPageScreen} />
-      <BottomTab.Screen name='我的' component={DetailPageScreen} />
+      <BottomTab.Screen name='发现' component={DiscoverPage} />
+      <BottomTab.Screen name='我的' component={MinePage} />
     </BottomTab.Navigator>
   );
 }
@@ -96,6 +83,7 @@ export default function App() {
       }}>
         <RootStack.Screen name='BottomTabNav' component={BottomTabNav} />
         <RootStack.Screen name='DetailPage' component={DetailPageScreen} />
+        <RootStack.Screen name='ChatDetailPage' component={ChatDetailPage} />
       </RootStack.Navigator>
     </NavigationContainer>
   );

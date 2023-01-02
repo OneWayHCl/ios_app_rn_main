@@ -9,7 +9,8 @@
  */
 
 import React from "react";
-import { Button, SafeAreaView, StatusBar, Text, useColorScheme, View } from "react-native";
+import { Button, Dimensions, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, useColorScheme, View } from "react-native";
+import { Image } from "react-native";
 import {
   Colors,
   DebugInstructions,
@@ -17,6 +18,9 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+
+// 获取屏幕高度和宽度
+const { width, height } = Dimensions.get('window');
 
 const MyNavigationBar = (props: {title: String}) => {
 
@@ -26,8 +30,34 @@ const MyNavigationBar = (props: {title: String}) => {
     height: 44
   };
   return (
-    <View style={backgroundStyle}><Text style={{ textAlign: 'center', lineHeight: 44, fontSize: 18, fontWeight: '500'}}>{ props.title }</Text></View>
+    <View style={[backgroundStyle, styles.container]}>
+      <Text style={styles.textStyle}>{ props.title }</Text>
+      <TouchableOpacity >
+        <Image source={require('../../img/add_icon.png')} style={styles.iconStyle} />
+      </TouchableOpacity>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    paddingRight: 15
+  },
+  textStyle: {
+    textAlign: 'center', 
+    lineHeight: 44, 
+    fontSize: 18, 
+    fontWeight: '500',
+    position: 'absolute',
+    width: width
+  },
+  iconStyle: {
+    width: 30,
+    height: 30,
+    marginTop: 5
+  }
+});
 
 export default MyNavigationBar;
