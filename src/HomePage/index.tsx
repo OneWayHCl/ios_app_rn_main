@@ -12,9 +12,18 @@ import React from "react";
 import { Button, Dimensions, FlatList, Image, SafeAreaView, StatusBar, StyleSheet, Text, TouchableHighlight, TouchableOpacity, useColorScheme, View } from "react-native";
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import MyNavigationBar from "../components/MyNavigationBar";
+import imageList from "../img/a_image_list";
 
 // 获取屏幕高度和宽度
 const { width, height } = Dimensions.get('window');
+
+// 获取随机数
+const getRandomInt = (m: number)=> {
+  const min = Math.ceil(1);
+  const max = Math.floor(m > 0 ? m : 60);
+  const randomNumber = Math.floor(Math.random() * (max - min + 1) + min);
+  return randomNumber;
+}
 
 const HomePage = ({ route, navigation }) => {
 
@@ -29,12 +38,15 @@ const HomePage = ({ route, navigation }) => {
   };
 
   let dataList = [];
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 60; i++) {
+    const hour = getRandomInt(23);
+    const min = getRandomInt(59);
     let dict = { 
       key: 'item' + i,
       title: '聊天窗' + i, 
+      iconIndex: getRandomInt(59),
       message: '元旦快乐，祝开心快乐' + i,
-      time: '15:' + (i < 10 ? '0' + i : i)
+      time: (hour < 10 ? '0' + hour : hour) + ':' + (min < 10 ? '0' + min : min)
     };
     dataList.push(dict);
   }
@@ -63,7 +75,7 @@ const HomePage = ({ route, navigation }) => {
       activeOpacity={0.8}
       onPress={()=>_renderItemAction(item)}>
       <View style={styles.itemContainer}>
-        <Image style={styles.itemIcon} source={require('../img/app_Icon.png')}></Image>
+        <Image style={styles.itemIcon} source={imageList[item.iconIndex]}></Image>
         <View style={styles.itemContent}>
           <Text style={styles.itemName}>{item.title}</Text>
           <Text style={styles.itemMessage}>{item.message}</Text>
@@ -85,7 +97,7 @@ const HomePage = ({ route, navigation }) => {
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <MyNavigationBar title={'微信'} />
+      <MyNavigationBar title={'微信'} rightItem={true} />
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <FlatList
           ref={(lst) => _flatList = lst}

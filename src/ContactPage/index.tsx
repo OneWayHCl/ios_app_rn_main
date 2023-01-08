@@ -15,11 +15,13 @@ import {
   StatusBar,
   useColorScheme,
   Appearance,
-  TouchableOpacity
+  TouchableOpacity,
+  Image
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import MyNavigationBar from '../components/MyNavigationBar';
+import imageList from '../img/a_image_list';
 
 const dimension = Dimensions.get('window')
 
@@ -29,8 +31,38 @@ const { width, height } = Dimensions.get('window');
 class ContactPage extends Component {
 
   componentDidMount() {
-    // useColorScheme();
     console.log('componentDidMount-------');
+  }
+
+  // 获取随机数
+  _getRandomInt(m: number) {
+    const min = Math.ceil(1);
+    const max = Math.floor(m > 0 ? m : 60);
+    const randomNumber = Math.floor(Math.random() * (max - min + 1) + min);
+    return randomNumber;
+  }
+
+  _getSectionName(index: number) {
+    if (index == 1) {
+      return 'A';
+    } else if (index == 2) {
+      return 'B';
+    } else if (index == 3) {
+      return 'C';
+    } else if (index == 4) {
+      return 'D';
+    } else if (index == 5) {
+      return 'E';
+    } else if (index == 6) {
+      return 'F';
+    } else if (index == 7) {
+      return 'G';
+    } else if (index == 8) {
+      return 'H';
+    } else {
+      return '#';
+    }
+
   }
 
   // 头部搜索
@@ -44,90 +76,115 @@ class ContactPage extends Component {
     </View>;
   }
 
-  _renderSectionHeader(info: { section: { key: any }; }) {
-
-    var txt = info.section.key;
-    return (
-      <View><Text key={info.section.key} style={{ width: width, height: 52, textAlign: 'left', backgroundColor: '#21c6cd', color: '#fff' }}>{txt}</Text></View>
-    )
+  // 组标题
+  _renderSectionHeader(info: { section: { key: any, index: number, sectionName: string } }) {
+    var index = info.section.index;
+    var sectionName = info.section.sectionName;
+    if (index == 0) {
+      return <></>
+    } else {
+      return (
+        <View style={{ height: 40 }}>
+          <Text key={info.section.key} style={{ paddingLeft: 16, width: width, lineHeight: 40, textAlign: 'left', backgroundColor: 'rgb(237,237,237)', color: 'rgb(83,83,83)' }}>{sectionName}</Text>
+        </View>
+      )
+    }
   }
 
-  _renderItem(info: { item: { title: any; name: string | number; phone: string | number; }; }) {
-
+  // 单个cell
+  _renderItem(info: { item: { name: string , iconIndex: number }}) {
     return (
-      <View>
-        <Text key={info.item.title}>{info.item.name}</Text>
-        <Text>{info.item.phone}</Text>
+      <View style={styles.itemContainer}>
+        <Image style={styles.itemIcon} source={imageList[info.item.iconIndex]}></Image>
+        <View style={styles.itemContent}>
+          <Text style={styles.itemName}>{info.item.name}</Text>
+        </View>
       </View>
-    )
+    );
   }
-  _separatorCom() {
-    return (
-      <View style={{ height: 4, width: 500, backgroundColor: 'orange' }}></View>
-    )
+
+  // 分割线
+  _itemSeparatorComponent() {
+    return <View style={{ paddingLeft: 70, backgroundColor: '#fff' }} >
+      <View
+        style={{ width: width - 70, height: 1, backgroundColor: '#eee' }}
+      />
+    </View>
   }
+
   render() {
     const allSections = [];
 
-    for (let i = 0; i < 10; i++) {
+    // 第一组
+    let section0 = {
+      key: '',
+      index: 0,
+      sectionName: '',
+      data: [
+        {
+          name: '新的朋友',
+          iconIndex: this._getRandomInt(0)
+        },
+        {
+          name: '群聊',
+          iconIndex: this._getRandomInt(0)
+        },
+        {
+          name: '公众号',
+          iconIndex: this._getRandomInt(0)
+        },
+        {
+          name: '企业微信联系人',
+          iconIndex: this._getRandomInt(0)
+        }
+      ]
+    }
+    allSections.push(section0);
+
+    // 其他组
+    for (let i = 1; i < 10; i++) {
       let datas = [];
-      for (let j = 0; j < 10; j++) {
+      const count = this._getRandomInt(10);
+      for (let j = 0; j < count; j++) {
         datas.push(
           {
-            name: '用户' + i + j,
-            phone: '01234567890',
-            title: i + '1w',
-          }
+            name: '好友' + this._getRandomInt(0) + i + j,
+            iconIndex: this._getRandomInt(0)
+          },
         );
       }
       let section = {
-        key: 'A' + i,
-        title: i + '1w',
-        name: 'q' + i,
-        data: datas,
-        renderItem: (item: any) => {
-          return <View>
-            <Text key={item.item.title}>{item.item.name + 'dd'}</Text>
-            <Text>{item.item.phone}</Text>
-          </View>
-        }
+        key: i + 'i',
+        index: i,
+        sectionName: this._getSectionName(i),
+        data: datas
       }
 
       allSections.push(section);
     }
 
-
-    // useColorScheme();
     const isDarkMode = Appearance.getColorScheme() === 'dark';
-    //   const backgroundStyle = {
-    //     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-    //     flex: 1
-    //   };
     const backgroundStyle = {
       backgroundColor: Colors.lighter,
-      flex: 1
     };
 
-
-    // const isDarkMode = false;
     return (
       <SafeAreaView style={backgroundStyle}>
         <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-        <MyNavigationBar title={'通讯录'} />
+        <MyNavigationBar title={'通讯录'}  rightItem={true} />
         <SectionList
           renderSectionHeader={this._renderSectionHeader}
           renderItem={this._renderItem}
+          ItemSeparatorComponent={this._itemSeparatorComponent}
           sections={allSections}
           refreshing={false}
           onRefresh={() => { console.log("刷新") }}
-          ItemSeparatorComponent={this._separatorCom}
-          SectionSeparatorComponent={() => <View style={{ height: 20, backgroundColor: 'blue' }}></View>}
           keyExtractor={(item, index) => ("index" + index + item)}
           onEndReached={(info) => { console.log("到达底部") }}
           onEndReachedThreshold={0}
-          stickySectionHeadersEnabled={true}
+          stickySectionHeadersEnabled={false}
           ListHeaderComponent={this._headerView}
-          ListFooterComponent={() => <View style={{ backgroundColor: 'red', alignItems: 'center' }}><Text>SectionList简易通讯录尾部</Text></View>}
+          ListFooterComponent={() => <View style={{ height: 20}}></View>}
         />
       </SafeAreaView>
     );
@@ -168,7 +225,37 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginBottom: 5,
   },
+  itemContainer: {
+    height: 55,
+    backgroundColor: '#fff',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  itemIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 5,
+    marginHorizontal: 16
+  },
+  itemContent: {
+    width: width - 100,
+    height: 40
+  },
+  itemName: {
+    color: '#000',
+    fontSize: 16,
+    lineHeight: 40
+  },
+  itemMessage: {
+    color: '#666',
+    fontSize: 14,
+    lineHeight: 16
+  },
+  itemTime: {
+    position: 'absolute',
+    right: 0,
+    top: 5
+  }
 });
 
 export default ContactPage;
-// AppRegistry.registerComponent('sectionlist', () => sectionlist);

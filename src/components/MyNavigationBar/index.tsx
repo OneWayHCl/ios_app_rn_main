@@ -22,7 +22,7 @@ import {
 // 获取屏幕高度和宽度
 const { width, height } = Dimensions.get('window');
 
-const MyNavigationBar = (props: {title: String}) => {
+const MyNavigationBar = (props: { title: String, rightItem: boolean}) => {
 
   const isDarkMode = useColorScheme() === 'dark';
   const backgroundStyle = {
@@ -31,10 +31,12 @@ const MyNavigationBar = (props: {title: String}) => {
   };
   return (
     <View style={[backgroundStyle, styles.container]}>
-      <Text style={styles.textStyle}>{ props.title }</Text>
-      <TouchableOpacity >
-        <Image source={require('../../img/add_icon.png')} style={styles.iconStyle} />
-      </TouchableOpacity>
+      <Text style={styles.textStyle}>{props.title}</Text>
+      {props.rightItem &&
+        <TouchableOpacity >
+          <Image source={require('../../img/add_icon.png')} style={styles.iconStyle} />
+        </TouchableOpacity>
+      }
     </View>
   );
 }
@@ -46,9 +48,9 @@ const styles = StyleSheet.create({
     paddingRight: 15
   },
   textStyle: {
-    textAlign: 'center', 
-    lineHeight: 44, 
-    fontSize: 18, 
+    textAlign: 'center',
+    lineHeight: 44,
+    fontSize: 18,
     fontWeight: '500',
     position: 'absolute',
     width: width

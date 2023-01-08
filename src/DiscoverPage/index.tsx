@@ -99,7 +99,7 @@ const backgroundStyle = {
     return (
       <SafeAreaView style={backgroundStyle}>
         <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-        <MyNavigationBar title={'发现'} />
+        <MyNavigationBar title={'发现'} rightItem={false}  />
         <SectionList
             renderSectionHeader={this._renderSectionHeader}
             renderItem={this._renderItem}
