@@ -8,11 +8,13 @@
  * @format
  */
 
-import React from "react";
-import { Button, Dimensions, FlatList, Image, SafeAreaView, StatusBar, StyleSheet, Text, TouchableHighlight, TouchableOpacity, useColorScheme, View } from "react-native";
+import React, { useState } from "react";
+import { Alert, Button, Dimensions, FlatList, Image, Modal, SafeAreaView, StatusBar, StyleSheet, Text, TouchableHighlight, TouchableOpacity, useColorScheme, View } from "react-native";
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import MyNavigationBar from "../components/MyNavigationBar";
 import imageList from "../img/a_image_list";
+import PageThreeScreen from "../page/PageThree";
+import OButton from "./OButton";
 
 // 获取屏幕高度和宽度
 const { width, height } = Dimensions.get('window');
@@ -26,6 +28,22 @@ const getRandomInt = (m: number)=> {
 }
 
 const HomePage = ({ route, navigation }) => {
+
+  const [modalVisible, setModalVisible] = useState(false);
+  // return (
+  //   <View style={styles.centeredView}>
+      
+
+  //     <TouchableHighlight
+  //       style={styles.openButton}
+  //       onPress={() => {
+  //         setModalVisible(true);
+  //       }}
+  //     >
+  //       <Text style={styles.textStyle}>Show Modal</Text>
+  //     </TouchableHighlight>
+  //   </View>
+  // );
 
   let _flatList: any;
 
@@ -53,7 +71,8 @@ const HomePage = ({ route, navigation }) => {
 
   const _renderItemAction = (item: any) => {
     console.log(item.title);
-    navigation.push('ChatDetailPage', item);
+    // navigation.push('ChatDetailPage', item);
+    navigation.push('PageThree');
     console.log('++++++++++++++++++++++++_renderItemAction');
     // console.log(_flatList);
   }
@@ -66,6 +85,20 @@ const HomePage = ({ route, navigation }) => {
           <Text style={styles.headSearchText}>🔍搜索</Text>
         </View>
       </TouchableOpacity>
+      <View style={{  borderColor: 'red', borderWidth: 1, flexDirection: 'row', width: width - 50, overflow: 'visible', marginBottom: 10}}>
+      <Button title='123' color='#aaaaaa' onPress={()=>{
+        setModalVisible(true);
+      }}></Button>
+      
+      <Button title='123' color={'red'} ></Button>
+      <Text>11123123123123123</Text>
+      <Text>!!!!!1112312312312311123123123123123123</Text>
+      </View>
+
+      <OButton title={"按钮超级长的一个按钮按钮超级长的一个按钮按钮超级长的一个按钮"} titleFont={20} iconSource={require('../img/icon_10.jpg')} iconSize={50} onPress={()=>{
+        console.log('按鈕點擊--点击');
+      }}></OButton>
+      <OButton title={"按鈕"} iconSource={require('../img/icon_11.jpg')} iconSize={30}></OButton>
     </View>;
   }
 
@@ -107,6 +140,30 @@ const HomePage = ({ route, navigation }) => {
           renderItem={_renderItemCell}
         />
       </View>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>Hello World!</Text>
+
+            <TouchableHighlight
+              style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+              onPress={() => {
+                setModalVisible(!modalVisible);
+              }}
+            >
+              <Text style={styles.textStyle}>Hide Modal</Text>
+            </TouchableHighlight>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
 
   );
@@ -114,7 +171,7 @@ const HomePage = ({ route, navigation }) => {
 
 const styles = StyleSheet.create({
   headContainer: {
-    height: 50,
+    height: 350,
     paddingHorizontal: 15,
     paddingVertical: 4,
     backgroundColor: Colors.lighter,
@@ -161,6 +218,47 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 0,
     top: 5
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: "center",
+    // width: width,
+    // height: height * 0.5,
+    backgroundColor: '#000000aa',
+  },
+  modalView: {
+    width: width,
+    height: 500,
+    marginBottom: 0,
+    // marginTop: height - 300,
+    backgroundColor: "red",
+    borderRadius: 20,
+    padding: 0,
+    // alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5
+  },
+  openButton: {
+    backgroundColor: "#F194FF",
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center"
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center"
   }
 });
 

@@ -156,7 +156,7 @@
                      itemName: 'itemName222App'
                    })
              }>
-                 <Image source={require('../../src/img/message_dark.png')} style={{ width: 24, height: 24 }} width={24} height={24} />
+                 {/* <Image source={require('../../src/img/message_dark.png')} style={{ width: 24, height: 24 }} width={24} height={24} /> */}
              </TouchableOpacity>
            </View>
          </View>

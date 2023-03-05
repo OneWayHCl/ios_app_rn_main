@@ -15,6 +15,7 @@ import ContactPage from './src/ContactPage';
 import DiscoverPage from './src/DiscoverPage';
 import MinePage from './src/MinePage';
 import ChatDetailPage from './src/HomePage/ChatPage';
+import PageThreeScreen from './src/page/PageThree';
 
 const BottomTab = createBottomTabNavigator();
 const RootStack = createNativeStackNavigator();
@@ -84,6 +85,8 @@ export default function App() {
         <RootStack.Screen name='BottomTabNav' component={BottomTabNav} />
         <RootStack.Screen name='DetailPage' component={DetailPageScreen} />
         <RootStack.Screen name='ChatDetailPage' component={ChatDetailPage} />
+        <RootStack.Screen name='PageThree' component={PageThreeScreen} />
+        
       </RootStack.Navigator>
     </NavigationContainer>
   );

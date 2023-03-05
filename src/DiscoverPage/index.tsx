@@ -19,6 +19,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import MyNavigationBar from '../components/MyNavigationBar';
+import PageThreeScreen from '../page/PageThree';
 
 const dimension = Dimensions.get('window')
 
