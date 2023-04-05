@@ -18,11 +18,12 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import { contactViewModel } from "../../ContactPage/ContactViewModel";
 
 // 获取屏幕高度和宽度
 const { width, height } = Dimensions.get('window');
 
-const MyNavigationBar = (props: { title: String, rightItem: boolean}) => {
+const MyNavigationBar = (props: { title: String, rightItem: boolean, rightClick?: Function }) => {
 
   const isDarkMode = useColorScheme() === 'dark';
   const backgroundStyle = {
@@ -33,7 +34,11 @@ const MyNavigationBar = (props: { title: String, rightItem: boolean}) => {
     <View style={[backgroundStyle, styles.container]}>
       <Text style={styles.textStyle}>{props.title}</Text>
       {props.rightItem &&
-        <TouchableOpacity >
+        <TouchableOpacity onPress={()=> {
+          if (props.rightClick) {
+            props.rightClick();
+          }
+        }}>
           <Image source={require('../../img/add_icon.png')} style={styles.iconStyle} />
         </TouchableOpacity>
       }

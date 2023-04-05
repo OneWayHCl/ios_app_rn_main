@@ -8,13 +8,18 @@
  * @format
  */
 
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Alert, Button, Dimensions, FlatList, Image, Modal, SafeAreaView, StatusBar, StyleSheet, Text, TouchableHighlight, TouchableOpacity, useColorScheme, View } from "react-native";
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import MyNavigationBar from "../components/MyNavigationBar";
 import imageList from "../img/a_image_list";
 import PageThreeScreen from "../page/PageThree";
 import OButton from "./OButton";
+import { observe } from "mobx";
+
+import {observer} from 'mobx-react-lite'
+import HomeViewModel from "./HomeViewModel";
+import { contactViewModel } from "../ContactPage/ContactViewModel";
 
 // 获取屏幕高度和宽度
 const { width, height } = Dimensions.get('window');
@@ -27,9 +32,31 @@ const getRandomInt = (m: number)=> {
   return randomNumber;
 }
 
+
 const HomePage = ({ route, navigation }) => {
 
-  const [modalVisible, setModalVisible] = useState(false);
+  const viewModel = useRef<HomeViewModel>();
+  if (viewModel.current == null) {
+    viewModel.current = new HomeViewModel();
+  }
+
+  // contactViewModel.increment();
+  console.log(contactViewModel.count);
+
+    //   //只执行一次
+    //   useEffect(()=>{
+    //     // 副效应函数体
+    //   },[]);
+    // //viewModel发生变化，执行一次
+    // useEffect(()=>{
+    //     // 副效应函数体
+    // }, [viewModel]);
+
+
+
+  // const [modalVisible, setModalVisible] = useState(false);
+  let list = new Array();
+  
   // return (
   //   <View style={styles.centeredView}>
       
@@ -69,6 +96,8 @@ const HomePage = ({ route, navigation }) => {
     dataList.push(dict);
   }
 
+  // console.log('-------',dataList);
+
   const _renderItemAction = (item: any) => {
     console.log(item.title);
     // navigation.push('ChatDetailPage', item);
@@ -80,25 +109,27 @@ const HomePage = ({ route, navigation }) => {
   // 头部搜索
   const _headerView = () => {
     return <View style={styles.headContainer}>
-      <TouchableOpacity activeOpacity={0.8}>
+      <TouchableOpacity activeOpacity={0.8} onPress={()=>{
+        contactViewModel.increment();
+      }}>
         <View style={styles.headSearch}>
           <Text style={styles.headSearchText}>🔍搜索</Text>
         </View>
       </TouchableOpacity>
-      <View style={{  borderColor: 'red', borderWidth: 1, flexDirection: 'row', width: width - 50, overflow: 'visible', marginBottom: 10}}>
+      {/* <View style={{  borderColor: 'red', borderWidth: 1, flexDirection: 'row', width: width - 50, overflow: 'visible', marginBottom: 10}}>
       <Button title='123' color='#aaaaaa' onPress={()=>{
         setModalVisible(true);
       }}></Button>
-      
       <Button title='123' color={'red'} ></Button>
       <Text>11123123123123123</Text>
       <Text>!!!!!1112312312312311123123123123123123</Text>
-      </View>
+      </View> */}
 
-      <OButton title={"按钮超级长的一个按钮按钮超级长的一个按钮按钮超级长的一个按钮"} titleFont={20} iconSource={require('../img/icon_10.jpg')} iconSize={50} onPress={()=>{
+      {/* <OButton title={"按钮超级长的一个按钮按钮超级长的一个按钮按钮超级长的一个按钮"} titleFont={20} iconSource={require('../img/icon_10.jpg')} iconSize={50} onPress={()=>{
         console.log('按鈕點擊--点击');
       }}></OButton>
       <OButton title={"按鈕"} iconSource={require('../img/icon_11.jpg')} iconSize={30}></OButton>
+      <OButton title={'超级按钮'}></OButton> */}
     </View>;
   }
 
@@ -130,10 +161,13 @@ const HomePage = ({ route, navigation }) => {
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <MyNavigationBar title={'微信'} rightItem={true} />
+      <MyNavigationBar title={'微信'} rightItem={true} rightClick={()=>{
+        console.log('MyNavigationBar----click');
+        viewModel.current?.changeVisible(true);
+      }} />
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <FlatList
-          ref={(lst) => _flatList = lst}
+          // ref={(lst) => _flatList = lst}
           data={dataList}
           ListHeaderComponent={_headerView}
           ItemSeparatorComponent={_itemSeparatorComponent}
@@ -143,10 +177,11 @@ const HomePage = ({ route, navigation }) => {
       <Modal
         animationType="slide"
         transparent={true}
-        visible={modalVisible}
+        visible={viewModel.current.modalVisible}
         onRequestClose={() => {
           Alert.alert("Modal has been closed.");
-          setModalVisible(!modalVisible);
+          // setModalVisible(!modalVisible);
+          
         }}
       >
         <View style={styles.centeredView}>
@@ -156,7 +191,7 @@ const HomePage = ({ route, navigation }) => {
             <TouchableHighlight
               style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
               onPress={() => {
-                setModalVisible(!modalVisible);
+                viewModel.current?.changeVisible(false);
               }}
             >
               <Text style={styles.textStyle}>Hide Modal</Text>
@@ -171,7 +206,7 @@ const HomePage = ({ route, navigation }) => {
 
 const styles = StyleSheet.create({
   headContainer: {
-    height: 350,
+    height: 50,
     paddingHorizontal: 15,
     paddingVertical: 4,
     backgroundColor: Colors.lighter,
@@ -262,4 +297,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default HomePage;
+export default observer(HomePage);

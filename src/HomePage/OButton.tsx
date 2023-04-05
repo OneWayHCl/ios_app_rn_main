@@ -36,7 +36,7 @@ const OButton = (props: Props) => {
             }
         }}>
             <View style={styles.contentContainer}>
-                {title != null && (<Text ellipsizeMode='tail' numberOfLines={1} style={ [styles.itemText, { fontSize: titleFont ? titleFont : 14 }] }>{title}</Text>)}
+                {title != null && (<Text ellipsizeMode='tail' numberOfLines={1} style={ [styles.itemText, { fontSize: titleFont ? titleFont : 14, flex: source ? 0.5:1 }] }>{title}</Text>)}
                 {source != null && (<Image style={[styles.itemIcon, { width: iconSize ? iconSize : 20, height: iconSize ? iconSize : 20 }]} source={source} height={undefined} width={undefined}></Image>)}
             </View>
         </TouchableOpacity>
@@ -67,6 +67,7 @@ const styles = StyleSheet.create({
     itemText: {
         fontSize: 14,
         color: '#333333',
+        textAlign: 'center',
         flex: 0.5
     },
 });

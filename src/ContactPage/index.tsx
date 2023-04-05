@@ -22,6 +22,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import MyNavigationBar from '../components/MyNavigationBar';
 import imageList from '../img/a_image_list';
+import { contactViewModel } from './ContactViewModel';
 
 const dimension = Dimensions.get('window')
 
@@ -113,6 +114,8 @@ class ContactPage extends Component {
   }
 
   render() {
+    const viewModel = contactViewModel;
+    
     const allSections = [];
 
     // 第一组

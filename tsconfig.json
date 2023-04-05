@@ -1,5 +1,7 @@
 {
     "compilerOptions": {
+		  "emitDecoratorMetadata": true,
+      "experimentalDecorators": true,
       "allowJs": true,
       "allowSyntheticDefaultImports": true,
       "esModuleInterop": true,
