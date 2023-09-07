@@ -20,6 +20,7 @@ import { observe } from "mobx";
 import {observer} from 'mobx-react-lite'
 import HomeViewModel from "./HomeViewModel";
 import { contactViewModel } from "../ContactPage/ContactViewModel";
+import IOSView from "./IOSView";
 
 // 获取屏幕高度和宽度
 const { width, height } = Dimensions.get('window');
@@ -72,7 +73,16 @@ const HomePage = ({ route, navigation }) => {
   //   </View>
   // );
 
-  let _flatList: any;
+  let _flatList:FlatList<{
+    key: string;
+    title: string;
+    iconIndex: number;
+    message: string;
+    time: string;
+}>;
+
+  // _flatList;
+  // _flatList.current;
 
   console.log(route.params, navigation);
   // const { itemId, itemName } = route.params;
@@ -101,9 +111,11 @@ const HomePage = ({ route, navigation }) => {
   const _renderItemAction = (item: any) => {
     console.log(item.title);
     // navigation.push('ChatDetailPage', item);
-    navigation.push('PageThree');
+    // navigation.push('PageThree');
+    navigation.push('PageFour');
     console.log('++++++++++++++++++++++++_renderItemAction');
     // console.log(_flatList);
+
   }
 
   // 头部搜索
@@ -161,17 +173,28 @@ const HomePage = ({ route, navigation }) => {
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+      <View>
+        <IOSView></IOSView>
+      </View>
       <MyNavigationBar title={'微信'} rightItem={true} rightClick={()=>{
         console.log('MyNavigationBar----click');
         viewModel.current?.changeVisible(true);
       }} />
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <FlatList
-          // ref={(lst) => _flatList = lst}
+          ref={(lst: FlatList<{
+            key: string;
+            title: string;
+            iconIndex: number;
+            message: string;
+            time: string;
+        }> ) => _flatList = lst}
           data={dataList}
           ListHeaderComponent={_headerView}
           ItemSeparatorComponent={_itemSeparatorComponent}
           renderItem={_renderItemCell}
+          // scrollsToTop={false}
+          
         />
       </View>
       <Modal
